@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+LOCAL_APPS = [
+    'DRF_shop.apps.product.apps.ProductConfig',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    *LOCAL_APPS,
 ]
 
 MIDDLEWARE = [
