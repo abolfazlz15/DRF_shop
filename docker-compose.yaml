@@ -2,17 +2,16 @@ version: '3.9'
 
 services:
   database:
-    container_name: blog_api_project_database
+    container_name: drf_shop_project_database
     image: postgres
     ports:
-      -"5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
       - postgres:/var/lib/postgresql/data
-  
   
   app:
     build:
@@ -21,9 +20,10 @@ services:
     container_name: blog_api_project_django_app
     command: >
       sh -c "python manage.py migrate &&
-            "python manage.py runserver 0.0.0.0:8000"
+             python manage.py collectstatic --no-input --clear &&
+             gunicorn DRf_shop.wsgi:application --bind 0.0.0.0:8000"
     ports:
-      -"8000:8000"
+      - 8000:8000
     volumes:
       - static:/usr/src/app/static
       - media:/usr/src/app/media
