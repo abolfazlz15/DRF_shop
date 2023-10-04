@@ -5,7 +5,7 @@ services:
     container_name: drf_shop_project_database
     image: postgres
     ports:
-      - 5432:5432
+      - 5432:5433
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
