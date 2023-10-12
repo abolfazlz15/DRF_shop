@@ -6,11 +6,13 @@ from apps.product.models import Category
 
 class CreateCategorySerializer(serializers.ModelSerializer):
     parent = serializers.IntegerField(required=False)
+    slug = serializers.SlugField(required=False)
 
     def create(self, validated_data):
         parent = validated_data.pop('parent', None)
+
         if parent is None:
-            Category.add_root(**validated_data)
+            instance = Category.add_root(**validated_data)
         else:
             parent_node = get_object_or_404(Category, pk=parent)
             instance = parent_node.add_child(**validated_data)
