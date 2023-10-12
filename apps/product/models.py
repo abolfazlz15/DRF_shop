@@ -1,7 +1,7 @@
 from django.db import models
 from treebeard.mp_tree import MP_Node
 from django.utils.text import slugify
-from managers import CategoryQuerySet
+from apps.product.managers import CategoryQuerySet
 
 
 class Category(MP_Node):
