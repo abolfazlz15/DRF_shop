@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-gdh(3vnamwxu3gci#1uq^je_e4v^@x*z1q-db9gepsugstn@)+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -25,6 +25,7 @@ LOCAL_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'treebeard',
 ]
 
 
