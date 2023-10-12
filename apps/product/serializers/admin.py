@@ -21,3 +21,31 @@ class CreateCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'title', 'description', 'is_active', 'slug', 'parent')
+
+
+class CategoryListSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = ('id', 'title', 'description', 'is_active', 'slug', 'children')
+
+    def get_children(self, obj):
+        return CategoryListSerializer(obj.get_children(), many=True).data
+
+
+class CategoryDetailSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+    def get_children(self, obj):
+        return CategoryListSerializer(obj.get_children(), many=True).data
+
+
+class CategoryUpdateOrDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'title', 'description', 'is_active')
