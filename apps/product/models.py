@@ -50,7 +50,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255, db_index=True)
     description = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, allow_unicode=True)
+    slug = models.SlugField(unique=True, allow_unicode=True, blank=True, null=True)
 
     track_stock = models.BooleanField(default=True)
     is_shipping = models.BooleanField(default=True)
