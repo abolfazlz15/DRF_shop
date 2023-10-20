@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Count
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
-from apps.product.models import Category, Product, Option, OptionGroup, ProductAttribute
+from apps.product.models import Category, ProductClass, Option, OptionGroup, ProductAttribute
 
 
 class ProductAttributeInline(admin.StackedInline):
@@ -34,19 +34,21 @@ class CategoryAdmin(TreeAdmin):
     form = movenodeform_factory(Category)
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+@admin.register(ProductClass)
+class ProductClassAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug', 'is_active', 'is_shipping', 'track_stock']
     inlines = [ProductAttributeInline]
     list_filter = ['is_active', 'is_shipping', 'track_stock', AttributeCountFilter]
     search_fields = ['title', 'description']
     prepopulated_fields = {'slug': ('title',)}
     actions = ['enable_is_active', 'disable_is_active']
+
     def enable_is_active(self, request, queryset):
         queryset.update(is_active=True)
 
     def disable_is_active(self, request, queryset):
         queryset.update(is_active=False)
+
 
 admin.site.register(Category, CategoryAdmin)
 
