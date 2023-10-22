@@ -80,7 +80,7 @@ class ProductAttribute(models.Model):
     option_group = models.ForeignKey(OptionGroup, on_delete=models.PROTECT, null=True, blank=True)
     title = models.CharField(max_length=255)
     type = models.CharField(max_length=25, choices=AttributeTypeChoice.choices, default=AttributeTypeChoice.text)
-    product = models.ForeignKey(ProductClass, on_delete=models.CASCADE, null=True, related_name='attributes')
+    product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE, null=True, related_name='attributes')
     is_required = models.BooleanField(default=False)
 
     class Meta:
@@ -127,6 +127,7 @@ class Product(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.PROTECT, null=True, blank=True,
                                       related_name='products')
     attributes = models.ManyToManyField(ProductAttribute, through='ProductAttributeValue')
+    recommended_products = models.ManyToManyField('Product')
 
     class Meta:
         verbose_name = 'Product'
@@ -140,9 +141,19 @@ class ProductAttributeValue(models.Model):
     value_integer = models.IntegerField(null=True, blank=True)
     value_float = models.FloatField(null=True, blank=True)
     value_option = models.ForeignKey(OptionGroupValue, on_delete=models.PROTECT)
-    value_multi_option = models.ManyToManyField(OptionGroupValue, on_delete=models.PROTECT)
+    value_multi_option = models.ManyToManyField(OptionGroupValue, related_name='multi_valued_attribute_value')
 
     class Meta:
         verbose_name = 'Attribute Value'
         verbose_name_plural = 'Attribute Values'
         unique_together = ('product', 'attribute')
+
+
+class ProductRecommendation(models.Model):
+    primary = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='primary_recommendation')
+    recommendation = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rank = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('primary', 'recommendation')
+        ordering = ('primary', '-rank')
