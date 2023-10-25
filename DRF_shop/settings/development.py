@@ -2,6 +2,7 @@ from DRF_shop.settings.base import *
 
 LOCAL_APPS = [
     'apps.product.apps.ProductConfig',
+    'apps.media.apps.MediaConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -36,5 +37,5 @@ DATABASES = {
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'medias/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'medias')

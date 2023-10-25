@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin_urls = [
     path('api/admin/catalog/', include(('apps.product.urls.admin', 'apps.product'), namespace='catalog-admin'))
@@ -18,6 +20,9 @@ doc_patterns = [
 urlpatterns = [
                   path("admin/", admin.site.urls),
               ] + admin_urls + doc_patterns
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_title = 'DRF Shop'
 admin.site.index_title = 'DRF Shop'
