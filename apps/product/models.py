@@ -131,6 +131,13 @@ class Product(AudiTableModel):
     recommended_products = models.ManyToManyField('Product', through='ProductRecommendation', blank=True)
     categories = models.ManyToManyField(Category, related_name='categories')
 
+    @property
+    def main_image(self):
+        if self.images.exists():
+            return self.images.first()
+        else:
+            return None
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -142,8 +149,9 @@ class ProductAttributeValue(models.Model):
     value_text = models.TextField(null=True, blank=True)
     value_integer = models.IntegerField(null=True, blank=True)
     value_float = models.FloatField(null=True, blank=True)
-    value_option = models.ForeignKey(OptionGroupValue, on_delete=models.PROTECT)
-    value_multi_option = models.ManyToManyField(OptionGroupValue, related_name='multi_valued_attribute_value')
+    value_option = models.ForeignKey(OptionGroupValue, on_delete=models.PROTECT, null=True, blank=True)
+    value_multi_option = models.ManyToManyField(OptionGroupValue, blank=True,
+                                                related_name='multi_valued_attribute_value')
 
     class Meta:
         verbose_name = 'Attribute Value'
@@ -159,3 +167,20 @@ class ProductRecommendation(models.Model):
     class Meta:
         unique_together = ('primary', 'recommendation')
         ordering = ('primary', '-rank')
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ForeignKey('media.Image', on_delete=models.PROTECT)
+
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ('display_order',)
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+
+        for index, image in enumerate(self.product.images.all()):
+            image.display_order = index
+            image.save()
