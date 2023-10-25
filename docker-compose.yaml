@@ -11,7 +11,7 @@ services:
       - "8000:8000"
     volumes:
       - static:/usr/src/app/static
-      - media:/usr/src/app/media
+      - media:/usr/src/app/medias
     depends_on:
       - db
 
