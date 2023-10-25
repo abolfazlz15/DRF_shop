@@ -12,8 +12,10 @@ class Image(models.Model):
     file_size = models.PositiveIntegerField(null=True, editable=False)
 
     def save(self, *args, **kwargs):
-        self.file_size = self.image.size
-        self.file_hash = self.hash_image_file()
+        if not self.image.file.closed:
+            print('test')
+            self.file_size = self.image.size
+            self.file_hash = self.hash_image_file()
         super().save(*args, **kwargs)
 
     def hash_image_file(self):
