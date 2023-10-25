@@ -3,6 +3,7 @@ from treebeard.mp_tree import MP_Node
 from django.utils.text import slugify
 from apps.product.managers import CategoryQuerySet
 from libs.db.db_fields import UpperCaseCharField
+from libs.db.db_models import AudiTableModel
 
 
 class Category(MP_Node):
@@ -110,7 +111,7 @@ class Option(models.Model):
         verbose_name_plural = 'Options'
 
 
-class Product(models.Model):
+class Product(AudiTableModel):
     class ProductTypeChoice(models.TextChoices):
         standalone = 'standalone'
         parent = 'parent'
@@ -127,7 +128,8 @@ class Product(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.PROTECT, null=True, blank=True,
                                       related_name='products')
     attributes = models.ManyToManyField(ProductAttribute, through='ProductAttributeValue')
-    recommended_products = models.ManyToManyField('Product')
+    recommended_products = models.ManyToManyField('Product', through='ProductRecommendation', blank=True)
+    categories = models.ManyToManyField(Category, related_name='categories')
 
     class Meta:
         verbose_name = 'Product'
