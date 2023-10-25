@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.db.models import Count
 from treebeard.admin import TreeAdmin
 from treebeard.forms import movenodeform_factory
-from apps.product.models import Category, ProductClass, Option, OptionGroup, ProductAttribute, ProductRecommendation
+from apps.product.models import Category, ProductClass, Option, OptionGroup, ProductAttribute, ProductRecommendation, \
+    Product, ProductAttributeValue, ProductImage
 
 
 class ProductAttributeInline(admin.StackedInline):
@@ -60,3 +61,22 @@ class ProductRecommendationInline(admin.StackedInline):
     model = ProductRecommendation
     extra = 2
     fk_name = 'primary'
+
+
+class ProductAttributeValueInline(admin.TabularInline):
+    model = ProductAttributeValue
+    extra = 2
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 2
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline, ProductRecommendationInline, ProductAttributeValueInline]
+    prepopulated_fields = {'slug': ('title',)}
+    list_display = ['title', 'parent', 'is_active', 'upc']
+
+
+admin.site.register(ProductAttribute)
