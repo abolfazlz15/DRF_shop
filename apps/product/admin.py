@@ -51,12 +51,6 @@ class ProductClassAdmin(admin.ModelAdmin):
         queryset.update(is_active=False)
 
 
-admin.site.register(Category, CategoryAdmin)
-
-admin.site.register(Option)
-admin.site.register(OptionGroup)
-
-
 class ProductRecommendationInline(admin.StackedInline):
     model = ProductRecommendation
     extra = 2
@@ -66,6 +60,7 @@ class ProductRecommendationInline(admin.StackedInline):
 class ProductAttributeValueInline(admin.TabularInline):
     model = ProductAttributeValue
     extra = 2
+
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
@@ -80,3 +75,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductAttribute)
+admin.site.register(Category, CategoryAdmin)
+
+admin.site.register(Option)
+admin.site.register(OptionGroup)

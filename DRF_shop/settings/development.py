@@ -3,6 +3,8 @@ from DRF_shop.settings.base import *
 LOCAL_APPS = [
     'apps.product.apps.ProductConfig',
     'apps.media.apps.MediaConfig',
+    'apps.inventory.apps.InventoryConfig',
+    'auths.accounts.apps.AccountsConfig',
 ]
 
 THIRD_PARTY_APPS = [
