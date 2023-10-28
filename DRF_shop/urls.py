@@ -5,7 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 admin_urls = [
-    path('api/admin/catalog/', include(('apps.product.urls.admin', 'apps.product'), namespace='catalog-admin'))
+    path('api/admin/catalog/', include(('apps.product.urls.admin', 'apps.product'), namespace='catalog-admin')),
+    path('api/admin/users/', include(('auths.accounts.urls.admin', 'auth.product'), namespace='users-admin'))
 ]
 
 # front_urls =[
