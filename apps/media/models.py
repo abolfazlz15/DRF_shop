@@ -13,7 +13,6 @@ class Image(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.image.file.closed:
-            print('test')
             self.file_size = self.image.size
             self.file_hash = self.hash_image_file()
         super().save(*args, **kwargs)
