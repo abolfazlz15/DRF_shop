@@ -9,9 +9,9 @@ admin_urls = [
     path('api/admin/users/', include(('auths.accounts.urls.admin', 'auth.product'), namespace='users-admin'))
 ]
 
-# front_urls =[
-#     path('api/front/catalog/', include(('apps.product.urls.admin', 'apps.product'), namespace='catalog-front'))
-# ]
+front_urls =[
+    path('api/front/users/', include(('auths.accounts.urls.client', 'auth.accounts'), namespace='accounts-front'))
+]
 
 doc_patterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
@@ -20,7 +20,7 @@ doc_patterns = [
 ]
 urlpatterns = [
                   path("admin/", admin.site.urls),
-              ] + admin_urls + doc_patterns
+              ] + admin_urls + front_urls + doc_patterns
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
