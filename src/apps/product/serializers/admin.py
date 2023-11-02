@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
-from apps.product.models import Category
+from apps.product.models import Category, Option, ProductClass
 
 
 class CreateCategorySerializer(serializers.ModelSerializer):
@@ -49,3 +49,21 @@ class CategoryUpdateOrDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'title', 'description', 'is_active')
+
+
+class OptionProductListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Option
+        fields = ('id', 'title', 'type', 'is_required')
+
+class ProductClassListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductClass
+        fields = ('id', 'title', 'description', 'is_active', 'track_stock', 'is_shipping')
+
+class ProductClassDetailSerializer(serializers.ModelSerializer):
+    option = OptionProductListSerializer(many=True)
+
+    class Meta:
+        model = ProductClass
+        fields = '__all__'
