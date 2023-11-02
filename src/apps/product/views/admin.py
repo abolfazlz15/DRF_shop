@@ -1,9 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.exceptions import NotAcceptable
 
-from apps.product.models import Category
-from apps.product.serializers.admin import CreateCategorySerializer, CategoryListSerializer, CategoryDetailSerializer, \
-    CategoryUpdateOrDeleteSerializer
+from apps.product.models import Category, ProductClass
+from apps.product.serializers import admin
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -16,16 +15,31 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         match self.action:
             case 'list':
-                return CategoryListSerializer
+                return admin.CategoryListSerializer
             case 'create':
-                return CreateCategorySerializer
+                return admin.CreateCategorySerializer
             case 'retrieve':
-                return CategoryDetailSerializer
+                return admin.CategoryDetailSerializer
             case 'update':
-                return CategoryUpdateOrDeleteSerializer
+                return admin.CategoryUpdateOrDeleteSerializer
             case 'partial_update':
-                return CategoryUpdateOrDeleteSerializer
+                return admin.CategoryUpdateOrDeleteSerializer
             case 'destroy':
-                return CategoryUpdateOrDeleteSerializer
+                return admin.CategoryUpdateOrDeleteSerializer
+            case _:
+                raise NotAcceptable()
+            
+
+class ProductClassViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        queryset = ProductClass.objects.all()
+        return queryset
+    
+    def get_serializer_class(self):
+        match self.action:
+            case 'list':
+                return admin.ProductClassListSerializer
+            case 'retrieve':
+                return admin.ProductClassDetailSerializer
             case _:
                 raise NotAcceptable()
